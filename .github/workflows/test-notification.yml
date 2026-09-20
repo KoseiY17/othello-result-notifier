@@ -1,0 +1,19 @@
+name: Test ntfy Notification
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send test notification
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: |
+          curl \
+            -H "Title: 日本オセロ連盟 大会結果" \
+            -H "Tags: game_die" \
+            -d "テスト大会が更新されました" \
+            "https://ntfy.sh/$NTFY_TOPIC"
