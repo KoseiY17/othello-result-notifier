@@ -28,12 +28,13 @@ jobs:
 
       - name: Save result state
         run: |
-          if git diff --quiet known_results.json 2>/dev/null; then
+          git add known_results.json
+
+          if git diff --cached --quiet; then
             echo "No changes."
           else
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add known_results.json
             git commit -m "Update known Othello results"
             git push
           fi
