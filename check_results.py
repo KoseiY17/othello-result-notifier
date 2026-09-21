@@ -83,16 +83,22 @@ def send_notification(result):
     if not topic:
         raise RuntimeError("NTFY_TOPIC が設定されていません。")
 
-    message = f"{result['title']}が更新されました"
+    payload = {
+        "topic": topic,
+        "title": "日本オセロ連盟 大会結果",
+        "message": f"{result['title']}が更新されました",
+        "click": result["url"],
+        "tags": ["game_die"],
+    }
+
+    data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
 
     request = urllib.request.Request(
-        f"{NTFY_SERVER}/{topic}",
-        data=message.encode("utf-8"),
+        NTFY_SERVER,
+        data=data,
         method="POST",
         headers={
-            "Title": "オセロ連盟　大会結果",
-            "Click": result["url"],
-            "Tags": "game_die",
+            "Content-Type": "application/json; charset=utf-8",
         },
     )
 
